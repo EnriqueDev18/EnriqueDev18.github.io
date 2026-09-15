@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adrian Enrique Leon – Portfolio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy: #04090f;
+      --accent: #1e90ff;
+      --accent2: #38bdf8;
+      --glow: rgba(30,144,255,0.28);
+    }
+    *  { box-sizing:border-box; margin:0; padding:0; }
+    html { scroll-behavior:smooth; }
+    body {
+      background-color: var(--navy);
+      color: #aec3db;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+    .serif { font-family:'Lora', serif; }
+    .mono  { font-family:'Space Mono', monospace; }
+
+    body::before {
+      content:'';
+      position:fixed; inset:0; z-index:0;
+      background-image:
+        linear-gradient(rgba(30,144,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(30,144,255,.025) 1px, transparent 1px);
+      background-size:56px 56px;
+      pointer-events:none;
+    }
+    .orb { position:fixed; border-radius:50%; filter:blur(120px); opacity:.15; pointer-events:none; z-index:0; }
+    .orb1 { width:700px; height:700px; background:#1e3a8a; top:-250px; left:-200px; }
+    .orb2 { width:550px; height:550px; background:#0369a1; bottom:-200px; right:-200px; }
+
+    /* ── NAV ── */
+    nav {
+      position:fixed; top:0; left:0; right:0; z-index:50;
+      backdrop-filter:blur(22px);
+      background:rgba(4,9,15,.85);
+      border-bottom:1px solid rgba(30,144,255,.09);
+    }
+    .nav-link {
+      position:relative; color:#4a6a88; font-size:.72rem;
+      font-weight:500; letter-spacing:.14em; text-transform:uppercase;
+      transition:color .3s;
+    }
+    .nav-link::after {
+      content:''; position:absolute; left:0; bottom:-3px;
+      width:0; height:1px; background:var(--accent2); transition:width .3s;
+    }
+    .nav-link:hover { color:#ccdff2; }
+    .nav-link:hover::after { width:100%; }
+
+    /* ── HERO ── */
+    .hero-label {
+      display:inline-block;
+      border:1px solid rgba(30,144,255,.28);
+      padding:4px 14px; font-size:.62rem; letter-spacing:.24em;
+      color:var(--accent2); background:rgba(30,144,255,.05);
+      text-transform:uppercase; margin-bottom:1.5rem;
+    }
+    .hero-name {
+      font-family:'Lora',serif;
+      font-size:clamp(2.5rem,6vw,4.8rem);
+      font-weight:700; line-height:1.05;
+      background:linear-gradient(135deg,#ddeeff 30%,var(--accent2) 100%);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+      background-clip:text;
+    }
+    .hero-role {
+      font-size:clamp(.78rem,1.6vw,.95rem);
+      font-weight:400; color:#2e5470;
+      letter-spacing:.2em; text-transform:uppercase; margin-top:.85rem;
+    }
+    .cursor-blink {
+      display:inline-block; width:2px; height:.88em;
+      background:var(--accent2); margin-left:5px; vertical-align:middle;
+      animation:blink 1s step-end infinite;
+    }
+    @keyframes blink { 50%{opacity:0;} }
+
+    .btn-primary {
+      display:inline-flex; align-items:center; gap:8px;
+      background:var(--accent); color:#fff;
+      padding:.68rem 1.55rem; font-size:.8rem; font-weight:600;
+      letter-spacing:.07em; border-radius:2px;
+      transition:all .3s; box-shadow:0 0 20px var(--glow);
+    }
+    .btn-primary:hover { background:#006ed4; box-shadow:0 0 36px var(--glow); transform:translateY(-2px); }
+
+    .btn-outline {
+      display:inline-flex; align-items:center; gap:8px;
+      border:1px solid rgba(30,144,255,.35); color:var(--accent2);
+      padding:.68rem 1.55rem; font-size:.8rem; font-weight:600;
+      letter-spacing:.07em; border-radius:2px; transition:all .3s;
+    }
+    .btn-outline:hover { background:rgba(30,144,255,.07); border-color:var(--accent2); transform:translateY(-2px); }
+
+    /* ── SECTIONS ── */
+    .section-label {
+      font-size:.6rem; letter-spacing:.3em; color:var(--accent);
+      text-transform:uppercase; margin-bottom:.45rem; font-weight:500;
+    }
+    .section-title {
+      font-family:'Lora',serif;
+      font-size:clamp(1.6rem,3.2vw,2.4rem); font-weight:700;
+      color:#cce0f5; line-height:1.1;
+    }
+    .section-line { width:38px; height:2px; background:var(--accent); margin-top:.85rem; margin-bottom:2.4rem; }
+
+    /* ── SKILL CARD ── */
+    .skill-card {
+      background:rgba(6,14,26,.82);
+      border:1px solid rgba(30,144,255,.1);
+      border-radius:6px; padding:1.4rem;
+      transition:all .35s; position:relative; overflow:hidden;
+    }
+    .skill-card::before {
+      content:''; position:absolute; inset:0;
+      background:linear-gradient(135deg,rgba(30,144,255,.05) 0%,transparent 60%);
+      opacity:0; transition:opacity .35s;
+    }
+    .skill-card:hover { border-color:rgba(30,144,255,.32); transform:translateY(-3px); box-shadow:0 14px 44px rgba(0,0,0,.5); }
+    .skill-card:hover::before { opacity:1; }
+
+    .skill-icon {
+      width:38px; height:38px; border-radius:5px;
+      display:flex; align-items:center; justify-content:center;
+      background:rgba(30,144,255,.09); margin-bottom:.8rem; font-size:1.2rem;
+    }
+
+    /* ── TAGS ── */
+    .tag {
+      display:inline-block;
+      font-size:.66rem; font-weight:500; letter-spacing:.04em;
+      padding:.26rem .65rem; border-radius:2px;
+      border:1px solid rgba(56,189,248,.2);
+      background:rgba(56,189,248,.04);
+      color:#5aa8c8; transition:all .22s;
+    }
+    .tag:hover { border-color:rgba(56,189,248,.45); color:#98d8ef; }
+
+    /* ── PROJECT CARD ── */
+    .project-card {
+      background:rgba(6,14,26,.88);
+      border:1px solid rgba(30,144,255,.1);
+      border-radius:8px; overflow:hidden;
+      transition:all .35s; display:flex; flex-direction:column;
+    }
+    .project-card:hover { border-color:rgba(30,144,255,.4); transform:translateY(-5px); box-shadow:0 20px 56px rgba(0,0,0,.6); }
+
+    .project-banner {
+      width:100%; height:148px;
+      background:linear-gradient(135deg,#060c18 0%,#0a1a30 100%);
+      display:flex; align-items:center; justify-content:center;
+      position:relative; overflow:hidden;
+    }
+    .project-banner::after {
+      content:''; position:absolute; inset:0;
+      background:linear-gradient(135deg,rgba(30,144,255,.07),transparent);
+    }
+
+    /* ── CONTACT ── */
+    .contact-item {
+      display:flex; align-items:center; gap:14px;
+      padding:.95rem 1.2rem; border-radius:5px;
+      border:1px solid rgba(30,144,255,.1);
+      background:rgba(6,14,26,.68); transition:all .3s; text-decoration:none;
+    }
+    .contact-item:hover { border-color:rgba(30,144,255,.36); background:rgba(30,144,255,.05); transform:translateX(4px); }
+
+    /* ── FADE IN ── */
+    .fade-in { opacity:0; transform:translateY(22px); transition:opacity .7s ease,transform .7s ease; }
+    .fade-in.visible { opacity:1; transform:translateY(0); }
+
+    section { position:relative; z-index:1; }
+
+    /* divider */
+    .divider { width:100%; height:1px; background:linear-gradient(90deg,transparent,rgba(30,144,255,.15),transparent); }
+  </style>
+</head>
+<body>
+
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+
+  <!-- ══ NAV ══ -->
+  <nav>
+    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="#hero" class="mono text-sm font-bold text-white tracking-widest flex items-center gap-1">
+        <span class="text-blue-400">&lt;</span>AEL<span class="text-blue-400">/&gt;</span>
+      </a>
+      <div class="hidden md:flex gap-9">
+        <a href="#sobre-mi"    class="nav-link">Sobre mí</a>
+        <a href="#habilidades" class="nav-link">Habilidades</a>
+        <a href="#proyectos"   class="nav-link">Proyectos</a>
+        <a href="#contacto"    class="nav-link">Contacto</a>
+      </div>
+      <button id="menu-btn" class="md:hidden text-blue-400 focus:outline-none">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden border-t border-blue-900/15 px-6 pb-5" style="background:rgba(4,9,15,.98)">
+      <div class="flex flex-col gap-5 pt-5">
+        <a href="#sobre-mi"    class="nav-link" onclick="closeMobileMenu()">Sobre mí</a>
+        <a href="#habilidades" class="nav-link" onclick="closeMobileMenu()">Habilidades</a>
+        <a href="#proyectos"   class="nav-link" onclick="closeMobileMenu()">Proyectos</a>
+        <a href="#contacto"    class="nav-link" onclick="closeMobileMenu()">Contacto</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ══ HERO ══ -->
+  <section id="hero" class="min-h-screen flex items-center pt-24 pb-16">
+    <div class="max-w-6xl mx-auto px-6 w-full">
+      <div class="grid md:grid-cols-2 gap-14 items-center">
+
+        <div>
+          <div class="hero-label mono">Lima, Perú · Disponible</div>
+          <h1 class="hero-name">Adrian<br/>Enrique<br/>Leon</h1>
+          <p class="hero-role">Desarrollador de Software &amp; Cloud<span class="cursor-blink"></span></p>
+          <p class="text-blue-300/42 mt-6 leading-relaxed max-w-md text-sm font-light">
+            Egresado técnico (ISIL) · Estudiante de Ingeniería Empresarial y de Sistemas (USIL).
+            Desarrollo full-stack, arquitectura de bases de datos y despliegue en infraestructura cloud y VPS.
+          </p>
+          <div class="flex flex-wrap gap-4 mt-8">
+            <a href="#proyectos" class="btn-primary">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+              </svg>
+              Ver Proyectos
+            </a>
+            <a href="#contacto" class="btn-outline">Contactarme</a>
+          </div>
+          <div class="flex flex-wrap gap-2 mt-9">
+            <span class="tag">PHP</span>
+            <span class="tag">Java</span>
+            <span class="tag">MySQL</span>
+            <span class="tag">Tailwind CSS</span>
+            <span class="tag">AWS</span>
+            <span class="tag">Linux VPS</span>
+            <span class="tag">Android</span>
+            <span class="tag">REST APIs</span>
+          </div>
+        </div>
+
+        <!-- Code block -->
+        <div class="hidden md:block">
+          <div class="relative">
+            <div class="absolute -inset-2 bg-blue-700/5 rounded-2xl blur-2xl"></div>
+            <div class="relative rounded-xl border border-blue-900/30 p-6 shadow-2xl" style="background:#050c18">
+              <div class="flex items-center gap-2 mb-5">
+                <span class="w-3 h-3 rounded-full bg-red-500/50"></span>
+                <span class="w-3 h-3 rounded-full bg-yellow-500/50"></span>
+                <span class="w-3 h-3 rounded-full bg-green-500/50"></span>
+                <span class="mono text-xs text-blue-800 ml-auto">perfil.json</span>
+              </div>
+              <pre class="mono text-xs leading-relaxed text-blue-300/65 overflow-x-auto"><code><span class="text-blue-400">{</span>
+  <span class="text-cyan-400">"nombre"</span>:   <span class="text-amber-300">"Adrian Enrique Leon"</span>,
+  <span class="text-cyan-400">"formacion"</span>: [
+    <span class="text-amber-300">"Técnico en DSI – ISIL"</span>,
+    <span class="text-amber-300">"Ing. Empresarial y Sistemas – USIL"</span>
+  ],
+  <span class="text-cyan-400">"enfoque"</span>: [
+    <span class="text-amber-300">"Full-Stack Development"</span>,
+    <span class="text-amber-300">"Database Architecture"</span>,
+    <span class="text-amber-300">"Cloud & VPS Deployment"</span>
+  ],
+  <span class="text-cyan-400">"stack"</span>: {
+    <span class="text-cyan-400">"backend"</span>:  [<span class="text-amber-300">"PHP"</span>, <span class="text-amber-300">"Java"</span>, <span class="text-amber-300">"Python"</span>],
+    <span class="text-cyan-400">"cloud"</span>:    [<span class="text-amber-300">"AWS IAM"</span>, <span class="text-amber-300">"VPS Linux"</span>],
+    <span class="text-cyan-400">"mobile"</span>:   <span class="text-amber-300">"Android Studio"</span>
+  },
+  <span class="text-cyan-400">"disponible"</span>: <span class="text-blue-300">true</span>
+<span class="text-blue-400">}</span></code></pre>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ══ SOBRE MÍ ══ -->
+  <section id="sobre-mi" class="py-24">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="fade-in">
+        <p class="section-label">01 — About</p>
+        <h2 class="section-title">Sobre mí</h2>
+        <div class="section-line"></div>
+      </div>
+      <div class="grid md:grid-cols-5 gap-14 items-start">
+        <div class="md:col-span-3 fade-in space-y-5 text-blue-200/52 leading-7 text-sm font-light">
+          <p>
+            Soy <strong class="text-blue-100 font-semibold">egresado técnico en Desarrollo de Sistemas de Información (ISIL)</strong> y estudiante de <strong class="text-blue-200 font-medium">Ingeniería Empresarial y de Sistemas (USIL)</strong>. Me enfoco en el desarrollo de software end-to-end, el diseño de arquitecturas de bases de datos relacionales y el despliegue de infraestructura en la nube y servidores VPS.
+          </p>
+          <p>
+            Cuento con experiencia práctica como <strong class="text-blue-200 font-medium">desarrollador freelance</strong>, llevando productos reales a producción. Combino el rigor técnico del código limpio con una visión orientada a procesos de negocio, análisis de datos y optimización de flujos operativos.
+          </p>
+
+          <!-- Formación -->
+          <div class="mt-6 space-y-3">
+            <div class="flex items-start gap-3 p-3 rounded border border-blue-900/25 bg-blue-950/20">
+              <div class="w-2 h-2 rounded-full bg-blue-400 mt-1.5 flex-shrink-0"></div>
+              <div>
+                <div class="text-blue-100 font-semibold text-sm">Técnico en Desarrollo de Sistemas de Información</div>
+                <div class="text-blue-400/60 text-xs mt-0.5 mono">ISIL · Egresado</div>
+              </div>
+            </div>
+            <div class="flex items-start gap-3 p-3 rounded border border-blue-900/25 bg-blue-950/20">
+              <div class="w-2 h-2 rounded-full bg-blue-400/60 mt-1.5 flex-shrink-0"></div>
+              <div>
+                <div class="text-blue-100 font-semibold text-sm">Ingeniería Empresarial y de Sistemas</div>
+                <div class="text-blue-400/60 text-xs mt-0.5 mono">USIL · En curso</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="md:col-span-2 fade-in grid grid-cols-2 gap-3">
+          <div class="skill-card text-center py-7">
+            <div class="text-3xl font-bold text-white serif mb-1">4</div>
+            <div class="text-xs text-blue-400/45 uppercase tracking-widest">Proyectos</div>
+          </div>
+          <div class="skill-card text-center py-7">
+            <div class="text-3xl font-bold text-white serif mb-1">10+</div>
+            <div class="text-xs text-blue-400/45 uppercase tracking-widest">Tecnologías</div>
+          </div>
+          <div class="skill-card text-center py-7">
+            <div class="text-2xl font-bold text-white serif mb-1">Cloud</div>
+            <div class="text-xs text-blue-400/45 uppercase tracking-widest">AWS · VPS</div>
+          </div>
+          <div class="skill-card text-center py-7">
+            <div class="text-3xl font-bold text-white serif mb-1">E2E</div>
+            <div class="text-xs text-blue-400/45 uppercase tracking-widest">Full Stack</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ══ HABILIDADES ══ -->
+  <section id="habilidades" class="py-24" style="background:rgba(5,11,22,.5)">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="fade-in">
+        <p class="section-label">02 — Skills</p>
+        <h2 class="section-title">Habilidades Técnicas</h2>
+        <div class="section-line"></div>
+      </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+
+        <div class="skill-card fade-in lg:col-span-2">
+          <div class="skill-icon">⚙️</div>
+          <h3 class="text-blue-50 font-semibold text-sm mb-1 serif">Backend &amp; Bases de Datos</h3>
+          <p class="text-blue-300/40 text-xs mb-4 leading-relaxed font-light">Lógica de negocio, persistencia relacional y APIs.</p>
+          <div class="flex flex-wrap gap-2">
+            <span class="tag">PHP</span><span class="tag">Java</span><span class="tag">Python</span>
+            <span class="tag">MySQL</span><span class="tag">SQL Server</span>
+            <span class="tag">Diseño DB Relacional</span><span class="tag">Normalización</span>
+            <span class="tag">REST APIs</span>
+          </div>
+        </div>
+
+        <div class="skill-card fade-in lg:col-span-2">
+          <div class="skill-icon">🎨</div>
+          <h3 class="text-blue-50 font-semibold text-sm mb-1 serif">Frontend &amp; Móvil</h3>
+          <p class="text-blue-300/40 text-xs mb-4 leading-relaxed font-light">Interfaces responsivas y aplicaciones nativas Android.</p>
+          <div class="flex flex-wrap gap-2">
+            <span class="tag">JavaScript</span><span class="tag">Tailwind CSS</span>
+            <span class="tag">HTML5</span><span class="tag">CSS3</span>
+            <span class="tag">Android Studio</span><span class="tag">Retrofit2</span><span class="tag">Glide</span>
+          </div>
+        </div>
+
+        <div class="skill-card fade-in lg:col-span-2">
+          <div class="skill-icon">☁️</div>
+          <h3 class="text-blue-50 font-semibold text-sm mb-1 serif">Cloud &amp; Infraestructura</h3>
+          <p class="text-blue-300/40 text-xs mb-4 leading-relaxed font-light">Despliegue, seguridad y administración de servidores.</p>
+          <div class="flex flex-wrap gap-2">
+            <span class="tag">AWS IAM</span><span class="tag">AWS CLI</span>
+            <span class="tag">Clouding.io VPS</span><span class="tag">Linux CLI</span>
+            <span class="tag">Netlify</span><span class="tag">DNS & Hosting</span>
+            <span class="tag">Git & GitHub</span>
+          </div>
+        </div>
+
+        <div class="skill-card fade-in lg:col-span-2">
+          <div class="skill-icon">📋</div>
+          <h3 class="text-blue-50 font-semibold text-sm mb-1 serif">Metodologías &amp; Negocio</h3>
+          <p class="text-blue-300/40 text-xs mb-4 leading-relaxed font-light">Gestión de proyectos y análisis de procesos.</p>
+          <div class="flex flex-wrap gap-2">
+            <span class="tag">Scrum</span><span class="tag">Kanban</span><span class="tag">Jira</span>
+            <span class="tag">Gobierno de TI</span><span class="tag">Análisis de Procesos</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ══ PROYECTOS ══ -->
+  <section id="proyectos" class="py-24">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="fade-in">
+        <p class="section-label">03 — Work</p>
+        <h2 class="section-title">Proyectos</h2>
+        <div class="section-line"></div>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-7">
+
+        <!-- 1: PendientesApp -->
+        <div class="project-card fade-in">
+          <div class="project-banner" style="background:linear-gradient(135deg,#050d1a,#0b1e38)">
+            <svg class="w-12 h-12 opacity-18 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+            </svg>
+            <div class="absolute top-3 left-3 z-10">
+              <span class="mono text-xs px-2 py-1 rounded-sm border border-blue-500/20 bg-blue-500/8 text-blue-400/70">Web App · Productividad</span>
+            </div>
+            <div class="absolute top-3 right-3 z-10 flex items-center gap-1.5 bg-emerald-500/10 border border-emerald-500/22 rounded-full px-2.5 py-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span class="mono text-xs text-emerald-400/80">En vivo</span>
+            </div>
+          </div>
+          <div class="p-6 flex flex-col flex-1">
+            <h3 class="text-white font-semibold text-lg serif mb-2">PendientesApp</h3>
+            <p class="text-blue-300/45 text-sm leading-relaxed font-light mb-4">
+              Plataforma web multiusuario para gestión de flujos de trabajo basada en metodología Kanban. Sistema integral de control de accesos basado en roles (RBAC), panel administrativo, auditoría histórica de cambios y persistencia relacional optimizada.
+            </p>
+            <!-- Highlights -->
+            <ul class="space-y-1.5 mb-5">
+              <li class="flex items-start gap-2 text-xs text-blue-300/50 font-light">
+                <span class="text-blue-500 mt-0.5 flex-shrink-0">▸</span>
+                Arquitectura con autenticación segura y permisos granulares (RBAC).
+              </li>
+              <li class="flex items-start gap-2 text-xs text-blue-300/50 font-light">
+                <span class="text-blue-500 mt-0.5 flex-shrink-0">▸</span>
+                Base de datos MySQL normalizada para trazabilidad y métricas de uso.
+              </li>
+              <li class="flex items-start gap-2 text-xs text-blue-300/50 font-light">
+                <span class="text-blue-500 mt-0.5 flex-shrink-0">▸</span>
+                Interfaz responsiva con Tailwind CSS y Vanilla JS.
+              </li>
+            </ul>
+            <div class="flex flex-wrap gap-2 mb-5">
+              <span class="tag">PHP</span><span class="tag">MySQL</span><span class="tag">JavaScript</span>
+              <span class="tag">Tailwind CSS</span><span class="tag">RBAC</span><span class="tag">Kanban</span>
+            </div>
+            <div class="mt-auto flex gap-5">
+              <a href="https://pendientesapp.com" target="_blank" rel="noopener"
+                 class="inline-flex items-center gap-2 text-xs text-blue-400 hover:text-blue-200 transition-colors font-medium tracking-widest uppercase">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                </svg>
+                pendientesapp.com
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2: VendoPe -->
+        <div class="project-card fade-in">
+          <div class="project-banner" style="background:linear-gradient(135deg,#050d1a,#091a2e)">
+            <svg class="w-12 h-12 opacity-18 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1.4 7M17 13l1.4 7M9 20a1 1 0 100 2 1 1 0 000-2zm8 0a1 1 0 100 2 1 1 0 000-2z"/>
+            </svg>
+            <div class="absolute top-3 left-3 z-10">
+              <span class="mono text-xs px-2 py-1 rounded-sm border border-blue-500/20 bg-blue-500/8 text-blue-400/70">E-Commerce · Marketplace</span>
+            </div>
+            <div class="absolute top-3 right-3 z-10 flex items-center gap-1.5 bg-emerald-500/10 border border-emerald-500/22 rounded-full px-2.5 py-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span class="mono text-xs text-emerald-400/80">En vivo</span>
+            </div>
+          </div>
+          <div class="p-6 flex flex-col flex-1">
+            <h3 class="text-white font-semibold text-lg serif mb-2">VendoPe</h3>
+            <p class="text-blue-300/45 text-sm leading-relaxed font-light mb-4">
+              Plataforma web comercial y catálogo interactivo enfocado en velocidad, navegación intuitiva y diseño adaptable a dispositivos móviles.
+            </p>
+            <ul class="space-y-1.5 mb-5">
+              <li class="flex items-start gap-2 text-xs text-blue-300/50 font-light">
+                <span class="text-blue-500 mt-0.5 flex-shrink-0">▸</span>
+                Componentes modulares y maquetación semántica de alto rendimiento.
+              </li>
+              <li class="flex items-start gap-2 text-xs text-blue-300/50 font-light">
+                <span class="text-blue-500 mt-0.5 flex-shrink-0">▸</span>
+                Carga asíncrona de datos para navegación fluida sin recargas innecesarias.
+              </li>
+            </ul>
+            <div class="flex flex-wrap gap-2 mb-5">
+              <span class="tag">PHP</span><span class="tag">JavaScript</span>
+              <span class="tag">Tailwind CSS</span><span class="tag">HTML5</span><span class="tag">Mobile First</span>
+            </div>
+            <div class="mt-auto">
+              <a href="https://vendope.com" target="_blank" rel="noopener"
+                 class="inline-flex items-center gap-2 text-xs text-blue-400 hover:text-blue-200 transition-colors font-medium tracking-widest uppercase">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                </svg>
+                vendope.com
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3: App Inventarios -->
+        <div class="project-card fade-in">
+          <div class="project-banner" style="background:linear-gradient(135deg,#050d1a,#0d1e35)">
+            <svg class="w-12 h-12 opacity-18 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+            <div class="absolute top-3 left-3 z-10">
+              <span class="mono text-xs px-2 py-1 rounded-sm border border-blue-500/20 bg-blue-500/8 text-blue-400/70">Mobile · Cloud · API REST</span>
+            </div>
+          </div>
+          <div class="p-6 flex flex-col flex-1">
+            <h3 class="text-white font-semibold text-lg serif mb-2">App Móvil de Inventarios &amp; API Cloud</h3>
+            <p class="text-blue-300/45 text-sm leading-relaxed font-light mb-4">
+              Aplicación móvil nativa para consulta, filtrado y monitoreo de existencias de inventario en tiempo real, vinculada a una base de datos alojada en infraestructura propia en la nube.
+            </p>
+            <ul class="space-y-1.5 mb-5">
+              <li class="flex items-start gap-2 text-xs text-blue-300/50 font-light">
+                <span class="text-blue-500 mt-0.5 flex-shrink-0">▸</span>
+                Servidor VPS aprovisionado y asegurado en Clouding.io bajo entorno Linux.
+              </li>
+              <li class="flex items-start gap-2 text-xs text-blue-300/50 font-light">
+                <span class="text-blue-500 mt-0.5 flex-shrink-0">▸</span>
+                Consumo de endpoints RESTful con renderizado dinámico y manejo de caché para estabilidad offline / baja latencia.
+              </li>
+            </ul>
+            <div class="flex flex-wrap gap-2 mb-5">
+              <span class="tag">Android Studio</span><span class="tag">Java</span>
+              <span class="tag">REST API</span><span class="tag">Retrofit2</span>
+              <span class="tag">Glide</span><span class="tag">Clouding.io VPS</span><span class="tag">Linux</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4: Cloud AWS -->
+        <div class="project-card fade-in">
+          <div class="project-banner" style="background:linear-gradient(135deg,#050d1a,#0a1828)">
+            <svg class="w-12 h-12 opacity-18 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+            </svg>
+            <div class="absolute top-3 left-3 z-10">
+              <span class="mono text-xs px-2 py-1 rounded-sm border border-blue-500/20 bg-blue-500/8 text-blue-400/70">Cloud Security · DevOps</span>
+            </div>
+          </div>
+          <div class="p-6 flex flex-col flex-1">
+            <h3 class="text-white font-semibold text-lg serif mb-2">Automatización y Seguridad Cloud (AWS)</h3>
+            <p class="text-blue-300/45 text-sm leading-relaxed font-light mb-4">
+              Implementación de políticas de control de identidades y accesos bajo el principio de mínimo privilegio, mediante scripts y terminal.
+            </p>
+            <ul class="space-y-1.5 mb-5">
+              <li class="flex items-start gap-2 text-xs text-blue-300/50 font-light">
+                <span class="text-blue-500 mt-0.5 flex-shrink-0">▸</span>
+                Aprovisionamiento programático de usuarios, grupos y roles en AWS IAM.
+              </li>
+              <li class="flex items-start gap-2 text-xs text-blue-300/50 font-light">
+                <span class="text-blue-500 mt-0.5 flex-shrink-0">▸</span>
+                Plantillas JSON de políticas de seguridad para auditoría y protección de recursos cloud.
+              </li>
+            </ul>
+            <div class="flex flex-wrap gap-2 mb-5">
+              <span class="tag">AWS IAM</span><span class="tag">AWS CLI</span>
+              <span class="tag">Bash / Linux</span><span class="tag">JSON</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ══ CONTACTO ══ -->
+  <section id="contacto" class="py-24" style="background:rgba(5,11,22,.5)">
+    <div class="max-w-3xl mx-auto px-6 text-center">
+      <div class="fade-in">
+        <p class="section-label">04 — Contact</p>
+        <h2 class="section-title">Contacto</h2>
+        <div class="section-line mx-auto"></div>
+        <p class="text-blue-300/38 text-sm font-light max-w-md mx-auto mb-10 leading-relaxed">
+          ¿Tienes un proyecto en mente o deseas colaborar? Estoy disponible para nuevas oportunidades.
+        </p>
+      </div>
+
+      <div class="flex flex-col gap-3 max-w-lg mx-auto fade-in">
+
+        <!-- Email -->
+        <a href="mailto:adrian_enrique_leon@hotmail.com" class="contact-item">
+          <div class="w-10 h-10 rounded-md bg-blue-500/8 border border-blue-500/15 flex items-center justify-center text-blue-400 flex-shrink-0">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="text-left">
+            <div class="text-xs text-blue-500/40 uppercase tracking-widest mb-0.5 mono">Correo</div>
+            <div class="text-blue-100 text-sm font-medium">adrian_enrique_leon@hotmail.com</div>
+          </div>
+        </a>
+
+        <!-- WhatsApp -->
+        <a href="https://wa.me/51922271651" target="_blank" rel="noopener" class="contact-item">
+          <div class="w-10 h-10 rounded-md bg-blue-500/8 border border-blue-500/15 flex items-center justify-center text-blue-400 flex-shrink-0">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+            </svg>
+          </div>
+          <div class="text-left">
+            <div class="text-xs text-blue-500/40 uppercase tracking-widest mb-0.5 mono">WhatsApp</div>
+            <div class="text-blue-100 text-sm font-medium">+51 922 271 651</div>
+          </div>
+        </a>
+
+        <!-- LinkedIn -->
+        <a href="https://www.linkedin.com/in/adrian-enrique-leon-1955b7364/" target="_blank" rel="noopener" class="contact-item">
+          <div class="w-10 h-10 rounded-md bg-blue-500/8 border border-blue-500/15 flex items-center justify-center text-blue-400 flex-shrink-0">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+            </svg>
+          </div>
+          <div class="text-left">
+            <div class="text-xs text-blue-500/40 uppercase tracking-widest mb-0.5 mono">LinkedIn</div>
+            <div class="text-blue-100 text-sm font-medium">adrian-enrique-leon-1955b7364</div>
+          </div>
+        </a>
+
+        <!-- GitHub -->
+        <a href="https://github.com/EnriqueDev18" target="_blank" rel="noopener" class="contact-item">
+          <div class="w-10 h-10 rounded-md bg-blue-500/8 border border-blue-500/15 flex items-center justify-center text-blue-400 flex-shrink-0">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+            </svg>
+          </div>
+          <div class="text-left">
+            <div class="text-xs text-blue-500/40 uppercase tracking-widest mb-0.5 mono">GitHub</div>
+            <div class="text-blue-100 text-sm font-medium">github.com/EnriqueDev18</div>
+          </div>
+        </a>
+
+      </div>
+
+      <!-- Location -->
+      <div class="mt-8 inline-flex items-center gap-2 text-xs text-blue-500/35 mono fade-in">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+        </svg>
+        Lima, Perú
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ FOOTER ══ -->
+  <footer style="border-top:1px solid rgba(30,144,255,.07)" class="py-7">
+    <div class="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <span class="mono text-xs" style="color:#172a3a">© 2025 Adrian Enrique Leon</span>
+      <div class="flex items-center gap-5">
+        <a href="https://github.com/EnriqueDev18" target="_blank" rel="noopener" class="text-blue-900/70 hover:text-blue-500 transition-colors">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+        </a>
+        <a href="https://www.linkedin.com/in/adrian-enrique-leon-1955b7364/" target="_blank" rel="noopener" class="text-blue-900/70 hover:text-blue-500 transition-colors">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+        <span class="mono text-xs" style="color:#172a3a">Diseñado &amp; desarrollado con 💙</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const menuBtn = document.getElementById('menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    menuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+    function closeMobileMenu() { mobileMenu.classList.add('hidden'); }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
